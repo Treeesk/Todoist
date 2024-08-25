@@ -1,0 +1,33 @@
+{% load static %}
+
+<link rel="stylesheet" href="{% static 'css/style.css'%}">  
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+
+<title>Планер</title>
+<div class="form-group mx-sm-3 mb-2">
+    <h1>Сегодня</h1>
+    <h2>Задачи</h2>
+    <form method="POST" action="{% url 'todoist:add' %}" >{% csrf_token %}
+      <input type="text" name='tasks' pattern=".{6,}" required title='Минимум шесть символов!!!' placeholder='Место для вашей задачи'>
+      <button type="submit" class="save btn btn-success">Добавить задачу</button>
+</div>
+</form>
+
+<ol>  
+{% for todo in todos %}
+<div>
+  {% if todo.edit_mode %}
+    <form action="{% url 'todoist:update' today_id=todo.id %}" method="POST"> {% csrf_token %}
+        <input type="text" name="tasks" value="{{ todo.tasks }}">
+        <button type="submit" class="save btn btn-default">Сохранить</button>
+    </form>
+    <a href="{% url 'todoist:close' today_id=todo.id %}">Отмена</a>
+  {% else %}
+    <li><p>{{ todo.tasks }}</p></li>
+    <a href="{% url 'todoist:delete' today_id=todo.id %}">Удалить</a>
+    <a href="{% url 'todoist:edit' today_id=todo.id %}">Изменить</a>
+  {% endif %}
+</div>
+{% endfor %}
+</ol>

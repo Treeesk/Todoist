@@ -1,0 +1,11 @@
+html,body {
+    padding-left: 20px;
+}
+.content {
+    width: 80%;
+    height: 60px;
+}
+
+*{
+    box-sizing: border-box;
+}
